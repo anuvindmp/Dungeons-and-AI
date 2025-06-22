@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dungeons and AI</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="/app/logoo.jpeg">
+<link rel="stylesheet" href="game.css">
+</head>
+<body>
+    <video autoplay muted loop id="myVideo">
+  <source src="back.webm" type="video/mp4">
+</video>
+    <header class="header">
+        <div class="logo-section">
+            <div class="logo-icon">
+                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M44 4H30.6666V17.3334H17.3334V30.6666H4V44H44V4Z" fill="currentColor"></path>
+                </svg>
+            </div>
+            <h2 class="logo-text" onclick="window.location.href='index.html'">Dungeons and AI</h2>
+        </div>
+        <div class="nav-section">
+            <button class="notification-btn" onclick="window.location.href='index.html'">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+                    <path d="M224,115.55V208a16,16,0,0,1-16,16H168a16,16,0,0,1-16-16V168a8,8,0,0,0-8-8H112a8,8,0,0,0-8,8v40a16,16,0,0,1-16,16H48a16,16,0,0,1-16-16V115.55a16,16,0,0,1,5.17-11.78l80-75.48.11-.11a16,16,0,0,1,21.53,0,1.14,1.14,0,0,0,.11.11l80,75.48A16,16,0,0,1,224,115.55Z"></path>
+                </svg>
+            </button>
+            <div class="profile-avatar"></div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="content-container">
+            <h2 class="story-title">The Whispering Woods</h2>
+            <p class="story-content">
+                As you venture deeper into the Whispering Woods, the air grows heavy with an unnatural stillness. The usual sounds of the forest - chirping birds, rustling leaves - are replaced by an eerie silence, broken only by the occasional whisper that seems to emanate from the trees themselves. You notice the path ahead is obscured by a thick mist, and a sense of unease settles over your party. What do you do?
+            </p>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="input-section">
+                <div class="user-avatar"></div>
+                <div class="input-container">
+                    <div class="input-wrapper">
+                        <input type="text" class="text-input" placeholder="Enter your reply..." value="">
+                        <div class="send-button-container">
+                            <button class="send-button">
+                                <span>Send</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
