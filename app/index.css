@@ -2,10 +2,11 @@
      margin: 0;
      padding: 0;
      box-sizing: border-box;
+     scroll-behavior: smooth;
  }
 
  html {
-     scroll-behavior: smooth;
+     scroll-behavior: smooth !important;
  }
 
  /* Footer Styles */
@@ -181,7 +182,7 @@
      background-size: cover;
      background-position: center;
      background-repeat: no-repeat;
-     background-image: linear-gradient(rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.6) 100%), url(/app/landing.png);
+     background-image: linear-gradient(rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.6) 100%), url(landing.png);
  }
 
  .hero-content {
@@ -271,6 +272,7 @@
  /* Scroll indicator */
  .scroll-indicator {
      position: absolute;
+     cursor: pointer;
      bottom: 30px;
      left: 50%;
      transform: translateX(-50%);
@@ -449,15 +451,15 @@
      z-index: 1;
  }
 
- .genre-card.fantasy {
+ #fanta {
      background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCRCipHFObosPdoArtQ6C0A7ekxuZbfhjChUt81hqFRemBaRjoEY05x6-4g-RoAmLpa7iFonT1ZNEM8l2QElIw6BdzU4LJGlJxJmC_HdKMyeHVyPgU0cAC0hlJkowTwRznRx09LAT-k8jvOoXy6MBwx6ZP0Lw9PTTEOsRNoAbe2g5kilwkM7p5g1bxkGebVFxbekj7Gtt2FKbNLWg_j5FoIKClZ4oUKYiQSZ3GnHUNSIhRe79qA1zgDmNCbpL708AngxbvaFn_93A");
  }
 
- .genre-card.sci-fi {
+ #sci{
      background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB9iI20_G4yAn1PcIK8Wb17HtH84WEXURd7qesui7SA9T6Vo1yUOxWBj9ZmxVuTYL82fMzdHKgxhmipRmC1JEXoLUlLHy35hK8cXAdoD1Sf0Ra2035jaAj2bY11Dag17VCNfnhJzJK5Apun8dHczhZrvzL7tTHm-_v6mPYUqJJCpCVX6VmK4Y0AzR5f2GqfqKYlVNkPbdwESJxBvHPhRUIzeQn_YBa739LDdfgl2LPP9Hm72A_IFDlRmiL-B-AElL4XMtIEMqOptA");
  }
 
- .genre-card.horror {
+ #hor{
      background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDSV-Ai-M2bOMCa_lqx3djZfNK-qT6xN627t7tRqSXAGTDekFRs3wR9veDXaXwmMqco-whDLOb872dUBvIhMbo-uK7zuQY-UPSf3sfGtxI0jUEvodFZ4IXaVnjgLsfBgQg3ujDAczFm_mfrmK31ZJr6hb9NMpDMJBhlu17kxi3EwQswBgOHsV_KM8FkM2sJM-H5m5AXPzRHVHJlmxpgIgq7jJro9wjOLTcrUyvRHvhk3Hal6uIotC-HpdtIC-bq6x_k37nHGC5hng");
  }
 

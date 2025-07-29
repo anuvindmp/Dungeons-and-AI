@@ -1,18 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dungeons and AI</title>
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700;900&family=Space+Grotesk:wght@400;500;700&display=swap"
+        rel="stylesheet">
     <link rel="icon" href="/app/logoo.jpeg">
-<link rel="stylesheet" href="game.css">
+    <link rel="stylesheet" href="game.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 </head>
+
 <body>
     <video autoplay muted loop id="myVideo">
-  <source src="back.webm" type="video/mp4">
-</video>
+        <source src="backk.mp4" type="video/mp4">
+    </video>
     <header class="header">
         <div class="logo-section">
             <div class="logo-icon">
@@ -24,8 +30,11 @@
         </div>
         <div class="nav-section">
             <button class="notification-btn" onclick="window.location.href='index.html'">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
-                    <path d="M224,115.55V208a16,16,0,0,1-16,16H168a16,16,0,0,1-16-16V168a8,8,0,0,0-8-8H112a8,8,0,0,0-8,8v40a16,16,0,0,1-16,16H48a16,16,0,0,1-16-16V115.55a16,16,0,0,1,5.17-11.78l80-75.48.11-.11a16,16,0,0,1,21.53,0,1.14,1.14,0,0,0,.11.11l80,75.48A16,16,0,0,1,224,115.55Z"></path>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                    viewBox="0 0 256 256">
+                    <path
+                        d="M224,115.55V208a16,16,0,0,1-16,16H168a16,16,0,0,1-16-16V168a8,8,0,0,0-8-8H112a8,8,0,0,0-8,8v40a16,16,0,0,1-16,16H48a16,16,0,0,1-16-16V115.55a16,16,0,0,1,5.17-11.78l80-75.48.11-.11a16,16,0,0,1,21.53,0,1.14,1.14,0,0,0,.11.11l80,75.48A16,16,0,0,1,224,115.55Z">
+                    </path>
                 </svg>
             </button>
             <div class="profile-avatar"></div>
@@ -34,9 +43,9 @@
 
     <main class="main-content">
         <div class="content-container">
-            <h2 class="story-title">The Whispering Woods</h2>
+            <h2 class="story-title">Welcome To The Dungeon</h2>
             <p class="story-content">
-                As you venture deeper into the Whispering Woods, the air grows heavy with an unnatural stillness. The usual sounds of the forest - chirping birds, rustling leaves - are replaced by an eerie silence, broken only by the occasional whisper that seems to emanate from the trees themselves. You notice the path ahead is obscured by a thick mist, and a sense of unease settles over your party. What do you do?
+
             </p>
         </div>
     </main>
@@ -59,4 +68,415 @@
         </div>
     </footer>
 </body>
+<!-- 
+<script>
+    let storyLog = [];  // Store entire session's story and images
+
+    document.addEventListener("DOMContentLoaded", async () => {
+        const params = new URLSearchParams(window.location.search);
+        let prompt = params.get("prompt") || "A shadow falls over the ancient kingdom.";
+
+        const contentContainer = document.querySelector(".content-container");
+
+        async function fetchStory(userPrompt) {
+            try {
+                const res = await fetch("/start", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ prompt: userPrompt })
+                });
+
+                const data = await res.json();
+
+                // Create story block
+                const storyDiv = document.createElement("div");
+                storyDiv.className = "story-block";
+
+                const storyP = document.createElement("p");
+                storyP.className = "story-content";
+                storyP.textContent = data.story || "No story found.";
+                storyDiv.appendChild(storyP);
+
+                // 🔊 Listen Button
+                let isSpeaking = false;
+                const listenBtn = document.createElement("button");
+                listenBtn.textContent = "🔊 Listen to Story";
+                listenBtn.className = "listen-button";
+
+                listenBtn.onclick = () => {
+                    if (isSpeaking) {
+                        window.speechSynthesis.cancel();
+                        isSpeaking = false;
+                        listenBtn.textContent = "🔊 Listen to Story";
+                    } else {
+                        const utterance = new SpeechSynthesisUtterance(data.story);
+                        utterance.lang = "en-US";
+                        utterance.rate = 1;
+
+                        utterance.onend = () => {
+                            isSpeaking = false;
+                            listenBtn.textContent = "🔊 Listen to Story";
+                        };
+
+                        window.speechSynthesis.cancel();
+                        window.speechSynthesis.speak(utterance);
+                        isSpeaking = true;
+                        listenBtn.textContent = "⏹ Stop Listening";
+                    }
+                };
+                storyDiv.appendChild(listenBtn);
+
+                // 📦 Log story entry
+                const storyEntry = {
+                    text: data.story,
+                    image: null
+                };
+
+                // 🖼 Generate Image Button
+                const imageBtn = document.createElement("button");
+                imageBtn.textContent = "🖼 Generate Image";
+                imageBtn.className = "generate-image-button";
+                imageBtn.onclick = async () => {
+                    imageBtn.disabled = true;
+                    imageBtn.textContent = "⏳ Generating...";
+                    const imgRes = await fetch("/generate-image", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ story: data.story })
+                    });
+
+                    const imgData = await imgRes.json();
+                    if (imgData.imageUrl) {
+                        const img = document.createElement("img");
+                        img.src = imgData.imageUrl;
+                        img.className = "story-image";
+                        storyDiv.appendChild(img);
+                        imageBtn.remove();
+
+                        storyEntry.image = img.src;  // Add to session log
+                    } else {
+                        imageBtn.textContent = "⚠️ Failed";
+                    }
+                };
+                storyDiv.appendChild(imageBtn);
+
+                contentContainer.appendChild(storyDiv);
+
+                // Append to full log
+                storyLog.push(storyEntry);
+
+                // 🎯 Story Options
+                if (data.options && Array.isArray(data.options)) {
+                    const optionsList = document.createElement("ul");
+                    optionsList.className = "options-list";
+
+                    data.options.forEach((opt, i) => {
+                        const li = document.createElement("li");
+                        li.textContent = `${i + 1}. ${opt.replace(/^\d+\.\s*/, "")}`;
+                        li.className = "option";
+                        li.addEventListener("click", () => {
+                            prompt = opt;
+                            fetchStory(prompt);
+                        });
+                        optionsList.appendChild(li);
+                    });
+
+                    contentContainer.appendChild(optionsList);
+
+                    // 📥 Download Button AFTER options
+                    const downloadBtn = document.createElement("button");
+                    downloadBtn.textContent = "📥 Download as PDF";
+                    downloadBtn.className = "download-button";
+                    contentContainer.appendChild(downloadBtn);
+
+                    downloadBtn.onclick = async () => {
+                        const { jsPDF } = window.jspdf;
+                        const doc = new jsPDF();
+                        const lineHeight = 10;
+                        const margin = 10;
+                        let y = margin;
+
+                        doc.setFontSize(16);
+                        doc.setFont("helvetica", "bold");
+                        doc.text("Dungeons and AI: Full Session", margin, y);
+                        y += lineHeight + 4;
+
+                        doc.setFontSize(12);
+                        doc.setFont("helvetica", "normal");
+
+                        for (let i = 0; i < storyLog.length; i++) {
+                            const entry = storyLog[i];
+
+                            const textLines = doc.splitTextToSize(entry.text, 180);
+                            if (y + textLines.length * lineHeight > 280) {
+                                doc.addPage();
+                                y = margin;
+                            }
+                            doc.text(textLines, margin, y);
+                            y += textLines.length * lineHeight + 2;
+
+                            if (entry.image) {
+                                const img = await loadImage(entry.image);
+                                const canvas = document.createElement("canvas");
+                                const ctx = canvas.getContext("2d");
+                                canvas.width = img.naturalWidth;
+                                canvas.height = img.naturalHeight;
+                                ctx.drawImage(img, 0, 0);
+                                const imgData = canvas.toDataURL("image/jpeg", 1.0);
+
+                                if (y + 100 > 280) {
+                                    doc.addPage();
+                                    y = margin;
+                                }
+
+                                doc.addImage(imgData, 'JPEG', margin, y, 180, 100);
+                                y += 110;
+                            }
+
+                            y += 5;  // extra space between entries
+                        }
+
+                        doc.save("dungeons_story_session.pdf");
+                    };
+
+                }
+
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+
+            } catch (e) {
+                console.error("Failed to fetch story:", e);
+            }
+        }
+
+        // Load initial prompt
+        fetchStory(prompt);
+
+        const sendButton = document.querySelector(".send-button");
+        const textInput = document.querySelector(".text-input");
+
+        sendButton.addEventListener("click", () => {
+            const userInput = textInput.value.trim();
+            if (userInput) {
+                fetchStory(userInput);
+                textInput.value = "";
+            }
+        });
+
+        textInput.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                sendButton.click();
+            }
+        });
+
+        // Helper to load image from URL
+        function loadImage(url) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.crossOrigin = "Anonymous"; // handle external URLs
+                img.onload = () => resolve(img);
+                img.src = url;
+            });
+        }
+    });
+</script> -->
+
+<script>
+    let storyLog = [];
+
+    document.addEventListener("DOMContentLoaded", async () => {
+        const params = new URLSearchParams(window.location.search);
+        let prompt = params.get("prompt") || "A shadow falls over the ancient kingdom.";
+
+        const contentContainer = document.querySelector(".content-container");
+
+        async function fetchStory(userPrompt) {
+            try {
+                const res = await fetch("/start", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ prompt: userPrompt })
+                });
+
+                const data = await res.json();
+
+                const storyDiv = document.createElement("div");
+                storyDiv.className = "story-block";
+
+                const storyP = document.createElement("p");
+                storyP.className = "story-content";
+                storyP.textContent = data.story || "No story found.";
+                storyDiv.appendChild(storyP);
+
+                // 🔊 Listen
+                let isSpeaking = false;
+                const listenBtn = document.createElement("button");
+                listenBtn.textContent = "🔊 Listen to Story";
+                listenBtn.className = "listen-button";
+                listenBtn.onclick = () => {
+                    if (isSpeaking) {
+                        window.speechSynthesis.cancel();
+                        isSpeaking = false;
+                        listenBtn.textContent = "🔊 Listen to Story";
+                    } else {
+                        const utterance = new SpeechSynthesisUtterance(data.story);
+                        utterance.lang = "en-US";
+                        utterance.rate = 1;
+                        utterance.onend = () => {
+                            isSpeaking = false;
+                            listenBtn.textContent = "🔊 Listen to Story";
+                        };
+                        window.speechSynthesis.cancel();
+                        window.speechSynthesis.speak(utterance);
+                        isSpeaking = true;
+                        listenBtn.textContent = "⏹ Stop Listening";
+                    }
+                };
+                storyDiv.appendChild(listenBtn);
+
+                // 🧾 Story entry log
+                const storyEntry = { text: data.story, image: null };
+
+                // 🖼 Image generation
+                const imageBtn = document.createElement("button");
+                imageBtn.textContent = "🖼 Generate Image";
+                imageBtn.className = "generate-image-button";
+                imageBtn.onclick = async () => {
+                    imageBtn.disabled = true;
+                    imageBtn.textContent = "⏳ Generating...";
+                    const imgRes = await fetch("/generate-image", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ story: data.story })
+                    });
+
+                    const imgData = await imgRes.json();
+                    if (imgData.imageUrl) {
+                        const img = document.createElement("img");
+                        img.src = imgData.imageUrl;
+                        img.className = "story-image";
+                        storyDiv.appendChild(img);
+                        imageBtn.remove();
+
+                        storyEntry.image = img.src;
+                    } else {
+                        imageBtn.textContent = "⚠️ Failed";
+                    }
+                };
+                storyDiv.appendChild(imageBtn);
+
+                contentContainer.appendChild(storyDiv);
+                storyLog.push(storyEntry);
+
+                if (data.options && Array.isArray(data.options)) {
+                    const optionsList = document.createElement("ul");
+                    optionsList.className = "options-list";
+
+                    data.options.forEach((opt, i) => {
+                        const li = document.createElement("li");
+                        li.textContent = `${i + 1}. ${opt.replace(/^\d+\.\s*/, "")}`;
+                        li.className = "option";
+                        li.addEventListener("click", () => {
+                            prompt = opt;
+                            fetchStory(prompt);
+                        });
+                        optionsList.appendChild(li);
+                    });
+
+                    contentContainer.appendChild(optionsList);
+
+                    // 📥 Download PDF (Structured Summary)
+                    const downloadBtn = document.createElement("button");
+                    downloadBtn.textContent = "📥 Download Summary PDF";
+                    downloadBtn.className = "download-button";
+
+                    downloadBtn.onclick = async () => {
+                        const storyTexts = storyLog.map(entry => entry.text);
+                        const summary = await summarizeWithGroq(storyTexts);
+                        generatePDF(summary);
+                    };
+
+                    contentContainer.appendChild(downloadBtn);
+                }
+
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+
+            } catch (e) {
+                console.error("Failed to fetch story:", e);
+            }
+        }
+
+        fetchStory(prompt);
+
+        const sendButton = document.querySelector(".send-button");
+        const textInput = document.querySelector(".text-input");
+
+        sendButton.addEventListener("click", () => {
+            const userInput = textInput.value.trim();
+            if (userInput) {
+                fetchStory(userInput);
+                textInput.value = "";
+            }
+        });
+
+        textInput.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                sendButton.click();
+            }
+        });
+
+        async function summarizeWithGroq(stories) {
+            const fullText = stories.join("\n\n");
+
+            const prompt = `
+You are a fantasy summarizer. Create a structured summary of this dungeon story session:
+1. Add a title.
+2. Break it into 3–5 chapters or parts.
+3. Highlight key choices, characters, and events.
+4. Make it suitable for printing as a short report.
+
+STORY SESSION:
+${fullText}
+`;
+
+            const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer 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"
+                },
+                body: JSON.stringify({
+                    model: "llama3-8b-8192", // or another Groq model
+                    messages: [{ role: "user", content: prompt }],
+                    temperature: 0.7
+                })
+            });
+
+            const json = await res.json();
+            return json.choices[0].message.content;
+        }
+
+        function generatePDF(summaryText) {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const lines = doc.splitTextToSize(summaryText, 180);
+            let y = 10;
+
+            for (const line of lines) {
+                if (y > 280) {
+                    doc.addPage();
+                    y = 10;
+                }
+                doc.text(line, 10, y);
+                y += 10;
+            }
+
+            doc.save("dungeons_summary.pdf");
+        }
+    });
+</script>
+
+
+
 </html>
